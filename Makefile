@@ -9,4 +9,4 @@ all: $(OBJ)
 	@blender $< --background --python ./export-model.py -- $@
 
 clean:
-	@rm -f ${OBJ}
+	@rm -rf ./build
