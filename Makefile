@@ -1,5 +1,3 @@
-# TODO -> better if this put the exported files to be not in source but rather relative in a build directory
-
 SOURCES := $(wildcard ./**/*.blend)
 OBJ :=$(patsubst %.blend, %.fbx, ${SOURCES})
 
