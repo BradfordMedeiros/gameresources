@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 import bpy
 import sys
 import os 
