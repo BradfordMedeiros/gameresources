@@ -1,0 +1,25 @@
+#!/usr/bin/awk -f
+
+# This doesn't guarantee paths are local, but it tries!
+
+/home\// {
+  print "found home reference"
+  exit(1)
+}
+
+/mosttrusted\// {
+  print "found mosttrusted reference"
+  exit(1)
+}
+
+/brad\// {
+  print "found brad reference"
+  exit(1)
+}
+
+/modengine\// {
+  print "found modengine reference"
+  exit(1)
+}
+
+
