@@ -1,25 +1,45 @@
-#!/usr/bin/awk -f
+#!/usr/bin/awk -f 
 
 # This doesn't guarantee paths are local, but it tries!
 
+BEGIN {
+  any_error = "0"
+}
+
 /home\// {
-  print "found home reference"
-  exit(1)
+  if (any_error == "1"){
+    printf " "
+  }
+  printf "home"
+  any_error = "1"
 }
 
 /mosttrusted\// {
-  print "found mosttrusted reference"
-  exit(1)
+  if (any_error == "1"){
+    printf " "
+  }
+  printf "mosttrusted "
+  any_error = "1"
 }
 
 /brad\// {
-  print "found brad reference"
-  exit(1)
+  if (any_error == "1"){
+    printf " "
+  }
+  printf "brad "
+  any_error = "1"
 }
 
-/modengine\// {
-  print "found modengine reference"
-  exit(1)
+/modengine\// { 
+  if (any_error == "1"){
+    printf " "
+  }
+  printf "modengine "
+  any_error = "1"
 }
 
-
+END {
+  if (any_error == "1"){
+    exit(1)
+  }
+}
