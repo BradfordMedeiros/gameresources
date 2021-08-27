@@ -2,6 +2,8 @@ import bpy
 import sys
 import os 
 
+# https://docs.blender.org/api/current/bpy.ops.export_scene.html
+
 output_file = sys.argv[6]
 output_format = sys.argv[7]
 
@@ -34,6 +36,8 @@ def build_dae():
 def build_gltf():
   bpy.ops.export_scene.gltf(
     filepath=output_file, 
+    export_format='GLTF_SEPARATE',
+    export_nla_strips=True 
   )
 
 format_to_build = {
