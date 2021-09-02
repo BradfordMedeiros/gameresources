@@ -1,10 +1,14 @@
-SOURCES := $(wildcard ./**/*.blend)
+SOURCES := $(shell find . -type f -name '*.blend')
 
 all: gltf
 	
 dae: $(patsubst ./%.blend, ./build/%.dae, ${SOURCES})
 fbx: $(patsubst ./%.blend, ./build/%.fbx, ${SOURCES})
 gltf: $(patsubst ./%.blend, ./build/%.gltf, ${SOURCES})
+
+fixmodels: $(patsubst ./%.blend, %.blend.update, ${SOURCES})
+validate:
+	@./check-models.sh || true
 
 ./build/%.fbx: %.blend
 	@echo "Build $@ from $<"
@@ -17,6 +21,10 @@ gltf: $(patsubst ./%.blend, ./build/%.gltf, ${SOURCES})
 ./build/%.gltf: %.blend
 	@echo "Build $@ from $<"
 	@blender $< --background --python ./export-model.py -- $@ gltf > /dev/null
+
+%.blend.update : %.blend
+	@echo "Updating model $<"
+	@blender $< --background --python ./make-relative.py -- $@ > /dev/null
 
 clean:
 	@rm -rf ./build
