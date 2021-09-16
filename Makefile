@@ -24,7 +24,7 @@ validate:
 
 %.blend.update : %.blend
 	@echo "Updating model $<"
-	@blender $< --background --python ./make-relative.py -- $@ > /dev/null
+	@blender $< --background --python ./try-fixmodel.py -- $@ > /dev/null
 
 clean:
 	@rm -rf ./build
