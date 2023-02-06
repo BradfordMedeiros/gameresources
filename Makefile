@@ -26,5 +26,10 @@ validate:
 	@echo "Updating model $<"
 	@blender $< --background --python ./try-fixmodel.py -- $@ > /dev/null
 
+generate-models:
+	@echo "Generating models"
+	@blender $< --background --python ./generate-models.py -- $@ #> /dev/null
+	#@blender $< --python ./generate-models.py -- $@
+
 clean:
 	@rm -rf ./build
