@@ -33,27 +33,27 @@ def create_object(vertices, faces, uv_coords):
   new_mesh.from_pydata(vertices, edges, faces)
   new_mesh.update()
   new_object = bpy.data.objects.new('new_object', new_mesh)
-
   new_collection = bpy.data.collections.new('new_collection')
   bpy.context.scene.collection.children.link(new_collection)
-
   new_collection.objects.link(new_object)
   bpy.context.scene.objects[0].name = "testobject"
   bpy.context.scene.objects[0].select_set(True)
   bpy.context.view_layer.objects.active = bpy.context.scene.objects[0]
-  newuv = bpy.context.active_object.data.uv_layers.new(name='newuv')
+  new_uv = bpy.context.active_object.data.uv_layers.new(name='NewUV')
  
   for loop in bpy.context.active_object.data.loops:
       new_uv.data[loop.index].uv = uv_coords[loop.index]
 
 
-def create_block(width, height):
-  vertices = [(-0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, -0.5, 0), (0.5, 0.5, 0)]
+def create_plane(width, height):
+  scale_width= 0.5 * width
+  scale_height = 0.5 * height
+  vertices = [(-scale_width, -scale_height, 0), (-scale_width, scale_height, 0), (scale_width, -scale_height, 0), (scale_width, scale_height, 0)]
   faces = [ (0, 1, 2), (2, 1, 3)]
-  uv_coords = [(0.375, 0.0), (0.625, 0.0), (0.625, 0.25)]
+  uv_coords = [(0, 0), (0, 1), (1, 0), (1, 0), (0, 1), (1, 1)]
   create_object(vertices, faces, uv_coords)
 
-create_block(2, 3)
+create_plane(2, 3)
 
 for model in models:
   bpy.ops.wm.save_mainfile(filepath = filepath_for_model(model))
