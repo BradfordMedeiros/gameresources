@@ -28,8 +28,10 @@ validate:
 
 generate-models:
 	@echo "Generating models"
-	@blender $< --background --python ./generate-models.py -- $@ #> /dev/null
-	#@blender $< --python ./generate-models.py -- $@
+	#blender $< --background --python ./generate-models.py -- $@ #> /dev/null
+	@blender $< --python ./generate-models.py -- $@
 
+clean-generate:
+	@rm ./generated/*
 clean:
 	@rm -rf ./build
