@@ -1,21 +1,25 @@
 import bpy
 from pathlib import Path
 
+models = [
+  { 'shape' : 'block', 'width' : 1, 'height' : 1,  'depth' : 1 },
+  { 'shape' : 'block', 'width' : 2, 'height' : 10,  'depth' : 0.5 },
+  { 'plane' : 'block', 'width' : 2, 'height' : 2 },
+]
+
 def delete_unwanted_objects(objtypes):
   cameras = [camera for camera in bpy.context.scene.objects if camera.type in objtypes]
   for camera in cameras:
     bpy.data.objects.remove(camera, do_unlink=True)  
 
-delete_unwanted_objects(['CAMERA', 'LIGHT', 'MESH'])
 
 def filepath_for_model(model):
   modelname = model['shape'] + '_' + str(model['width']) + 'x' + str(model['height'])
+  if 'depth' in model:
+    modelname = modelname + 'x' + str(model['depth'])
   filepath = './generated/' + modelname + '.blend'
   return filepath
 
-models = [
-  { 'shape' : 'block', 'width' : 2, 'height' : 2, 'uv-tiling' : [1, 1] },
-]
 
 for model in models:
   filepath = filepath_for_model(model)
@@ -65,7 +69,7 @@ def create_block(width, height, depth):
     (0, 1, 2), (2, 1, 3),           # front face   good 
     (6, 7, 4), (4, 7, 5),          # back face     good 
     (4, 5, 0), (0, 5, 1),          # left face  good
-    (2, 3, 6), (6, 3, 7),          # right face  having problems with this
+    (2, 3, 6), (6, 3, 7),          # right face good
     (1, 5, 3), (3, 5, 7),          # top face        good 
     (0, 2, 4),  (2, 6, 4),         # bottom face  good
   ]
@@ -80,10 +84,29 @@ def create_block(width, height, depth):
   create_object(vertices, faces, uv_coords)
 
 
-create_block(3, 0.5, 2)
 
 for model in models:
-  bpy.ops.wm.save_mainfile(filepath = filepath_for_model(model))
+  delete_unwanted_objects(['CAMERA', 'LIGHT', 'MESH'])
+  filepath = filepath_for_model(model)
+
+  shape = model['shape'];
+  if shape == 'block':
+    width = model['width']
+    height = model['height']
+    depth = model['depth']
+    create_block(width, height, depth)
+    pass
+  elif shape == 'plane':
+    width = model['width']
+    height = model['height']
+    create_plane(width, height)
+    pass
+
+  bpy.ops.wm.save_mainfile(filepath = filepath)
+
+
+
+  
 
 
 
