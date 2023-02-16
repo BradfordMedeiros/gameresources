@@ -4,7 +4,8 @@ from pathlib import Path
 models = [
   { 'shape' : 'block', 'width' : 1, 'height' : 1,  'depth' : 1 },
   { 'shape' : 'block', 'width' : 2, 'height' : 10,  'depth' : 0.5 },
-  { 'plane' : 'block', 'width' : 2, 'height' : 2 },
+  { 'shape' : 'plane', 'width' : 2, 'height' : 2 },
+  { 'shape' : 'ramp', 'width' : 2, 'height' : 2, 'depth' : 1 },
 ]
 
 def delete_unwanted_objects(objtypes):
@@ -68,7 +69,7 @@ def create_block(width, height, depth):
   faces = [ 
     (0, 1, 2), (2, 1, 3),           # front face   good 
     (6, 7, 4), (4, 7, 5),          # back face     good 
-    (4, 5, 0), (0, 5, 1),          # left face  good
+    (4, 5, 1), (0, 4, 1),          # left face  good
     (2, 3, 6), (6, 3, 7),          # right face good
     (1, 5, 3), (3, 5, 7),          # top face        good 
     (0, 2, 4),  (2, 6, 4),         # bottom face  good
@@ -76,13 +77,37 @@ def create_block(width, height, depth):
   uv_coords = [
     (0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # front face
     (0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # back face
-    (0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # left face 
-    (0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # right face   
+    (0, 0), (0, 1), (-1, 1), (-1, 0), (0, 0), (-1, 1),    # left face 
+    (0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # right face    (-1, 0), (0, 1), (-1, 1),    # right face   
     (0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # top face
     (0, 0), (1, 0), (0, 1), (1, 0), (1, 1) , (0, 1),     # bottom face
   ]  
   create_object(vertices, faces, uv_coords)
 
+
+def create_ramp(width, height, depth):
+  scale_width= 0.5 * width
+  scale_height = 0.5 * height
+  scale_depth = 0.5 * depth
+  vertices = [
+    (-scale_width, -scale_height, -scale_depth), (-scale_width, scale_height, -scale_depth), (scale_width, -scale_height, -scale_depth), (scale_width, scale_height, -scale_depth),  # front face
+    (-scale_width, -scale_height, scale_depth), (-scale_width, scale_height, scale_depth), (scale_width, -scale_height, scale_depth), (scale_width, scale_height, scale_depth),  # back face
+  ]
+  faces = [ 
+    (0, 1, 2), (2, 1, 3),           # front face   good 
+    (0, 4, 1),          # left face  good
+    (2, 3, 6),        # right face good
+    (0, 2, 4), (2, 6, 4),         # bottom face  good
+    (6, 3, 1), (1, 4, 6)
+  ]
+  uv_coords = [
+    (0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # front face
+    (-1, 0), (0, 0), (-1, 1),    # left face 
+    (0, 0), (0, 1), (-1, 0),    # right face    (-1, 0), (0, 1), (-1, 1),    # right face   
+    (0, 0), (1, 0), (0, 1), (1, 0), (1, 1) , (0, 1),     # bottom face
+    (0, 0), (0, 1), (1, 1), (1, 1), (1, 0) , (0, 0),     # main ramp face
+  ]  
+  create_object(vertices, faces, uv_coords)
 
 
 for model in models:
@@ -95,12 +120,18 @@ for model in models:
     height = model['height']
     depth = model['depth']
     create_block(width, height, depth)
-    pass
   elif shape == 'plane':
     width = model['width']
     height = model['height']
     create_plane(width, height)
-    pass
+  elif shape == 'ramp':
+    width = model['width']
+    height = model['height']
+    depth = model['depth']
+    create_ramp(width, height, depth)
+  else:
+    print('invalid shape type: ' + shape)
+    exit(1)
 
   bpy.ops.wm.save_mainfile(filepath = filepath)
 
