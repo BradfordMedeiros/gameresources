@@ -1,11 +1,16 @@
 import bpy
 from pathlib import Path
 
+from math import cos, sin, radians
+
 models = [
   { 'shape' : 'block', 'width' : 1, 'height' : 1,  'depth' : 1 },
   { 'shape' : 'block', 'width' : 2, 'height' : 10,  'depth' : 0.5 },
   { 'shape' : 'plane', 'width' : 2, 'height' : 2 },
   { 'shape' : 'ramp', 'width' : 2, 'height' : 2, 'depth' : 1 },
+  #{ 'shape' : 'curve-ramp', 'width' : 2, 'height' : 2, 'depth' : 1 },
+  { 'shape' : 'ring', 'width' : 2, 'height' : 2, 'depth' : 1, 'hole-radius' : 1 },
+
 ]
 
 def delete_unwanted_objects(objtypes):
@@ -110,6 +115,72 @@ def create_ramp(width, height, depth):
   create_object(vertices, faces, uv_coords)
 
 
+def connect_vertices(_faces, vertex_index_from, vertex_index_to, size, flip_winding):
+  for i in range(size):
+    vertexFromPlus1 = vertex_index_from + 1 + i
+    if vertexFromPlus1 == (vertex_index_from + size):
+      vertexFromPlus1 = vertex_index_from
+
+    vertexToPlus1 = vertex_index_to + 1 + i
+    if vertexToPlus1 == (vertex_index_to + size):
+      vertexToPlus1 = vertex_index_to
+
+    face1 = None
+    face2 = None
+    if not flip_winding:
+      face1 = (vertex_index_from + i, vertex_index_to + i, vertexFromPlus1)
+      face2 = (vertexFromPlus1, vertex_index_to + i , vertexToPlus1)
+    else:
+      face1 = (vertexFromPlus1, vertex_index_to + i, vertex_index_from + i)
+      face2 = (vertexToPlus1, vertex_index_to + i , vertexFromPlus1)
+
+    _faces.append(face1)
+    _faces.append(face2)
+
+
+def create_plane_circle(_vertices, _faces, resolution, radius, flip_winding):
+  initial_vertex_index = len(_vertices)
+  for i in range(resolution):
+    angle_radians = radians(i * (360 / resolution))
+    x_value = radius * cos(angle_radians)
+    z_value = radius * sin(angle_radians)
+    _vertices.append((x_value, 0, z_value))
+
+  for i in range(resolution):
+    angle_radians = radians(i * (360 / resolution))
+    x_value = radius * cos(angle_radians)
+    z_value = radius * sin(angle_radians)
+    _vertices.append((x_value, 1, z_value))
+
+  connect_vertices(_faces, initial_vertex_index, initial_vertex_index + resolution, resolution, flip_winding)
+
+
+def create_ring(width, height, depth, hole_radius):
+  scale_width= 0.5 * width
+  scale_height = 0.5 * height
+  scale_depth = 0.5 * depth
+  vertices = []
+
+  faces = [ 
+    #(0, 1, 2), (2, 1, 3),           # front face   good 
+  ]
+  create_plane_circle(vertices, faces, 10, 1, True)
+  create_plane_circle(vertices, faces, 10, 2, False)
+
+  connect_vertices(faces, 0, 20, 10, False)
+  connect_vertices(faces, 10, 30, 10, True)
+
+  print ("vertices: ")
+  print (vertices)
+  print ("size = " + str(len(vertices)))
+  print("faces: ")
+  print(faces)
+
+  uv_coords = [
+    #(0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # front face
+  ]  
+  create_object(vertices, faces, uv_coords)
+
 for model in models:
   delete_unwanted_objects(['CAMERA', 'LIGHT', 'MESH'])
   filepath = filepath_for_model(model)
@@ -129,6 +200,12 @@ for model in models:
     height = model['height']
     depth = model['depth']
     create_ramp(width, height, depth)
+  elif shape == 'ring':
+    width = model['width']
+    height = model['height']
+    depth = model['depth']
+    hole_radius = model['hole-radius'];
+    create_ring(width, height, depth, hole_radius) 
   else:
     print('invalid shape type: ' + shape)
     exit(1)
