@@ -9,7 +9,7 @@ models = [
   { 'shape' : 'plane', 'width' : 2, 'height' : 2 },
   { 'shape' : 'ramp', 'width' : 2, 'height' : 2, 'depth' : 1 },
   #{ 'shape' : 'curve-ramp', 'width' : 2, 'height' : 2, 'depth' : 1 },
-  { 'shape' : 'ring', 'width' : 2, 'height' : 2, 'depth' : 1, 'hole-radius' : 1 },
+  { 'shape' : 'ring', 'width' : 1, 'height' : 1, 'depth' : 1, 'hole-radius' : 0.5 },
 
 ]
 
@@ -26,13 +26,6 @@ def filepath_for_model(model):
   filepath = './generated/' + modelname + '.blend'
   return filepath
 
-
-for model in models:
-  filepath = filepath_for_model(model)
-  print ("filepath is: " + filepath)
-  if Path(filepath).is_file():
-    print("Warning file: " + filepath + " already exists, exiting without writing any files")
-    exit(1)
 
 
 # https://b3d.interplanety.org/en/how-to-create-a-new-mesh-uv-with-the-blender-python-api/
@@ -115,7 +108,7 @@ def create_ramp(width, height, depth):
   create_object(vertices, faces, uv_coords)
 
 
-def connect_vertices(_faces, vertex_index_from, vertex_index_to, size, flip_winding):
+def connect_vertices(_faces, _uv_coords, vertex_index_from, vertex_index_to, size, flip_winding):
   for i in range(size):
     vertexFromPlus1 = vertex_index_from + 1 + i
     if vertexFromPlus1 == (vertex_index_from + size):
@@ -134,11 +127,31 @@ def connect_vertices(_faces, vertex_index_from, vertex_index_to, size, flip_wind
       face1 = (vertexFromPlus1, vertex_index_to + i, vertex_index_from + i)
       face2 = (vertexToPlus1, vertex_index_to + i , vertexFromPlus1)
 
-    _faces.append(face1)
-    _faces.append(face2)
+
+    _faces.append(face1)  # bottom right
+    _faces.append(face2)  # top left
+
+    if not flip_winding:
+      _uv_coords.append((0, 1))
+      _uv_coords.append((1, 1))
+      _uv_coords.append((0, 0))
+
+      _uv_coords.append((0, 0))
+      _uv_coords.append((1, 1))
+      _uv_coords.append((1, 0))
+  
+    else:
+      _uv_coords.append((0, 0))
+      _uv_coords.append((1, 1))
+      _uv_coords.append((1, 0))
+  
+      _uv_coords.append((0, 1))
+      _uv_coords.append((1, 1))
+      _uv_coords.append((0, 0))
 
 
-def create_plane_circle(_vertices, _faces, resolution, radius, flip_winding):
+
+def create_plane_circle(_vertices, _faces, _uv_coords, resolution, radius, flip_winding):
   initial_vertex_index = len(_vertices)
   for i in range(resolution):
     angle_radians = radians(i * (360 / resolution))
@@ -152,7 +165,7 @@ def create_plane_circle(_vertices, _faces, resolution, radius, flip_winding):
     z_value = radius * sin(angle_radians)
     _vertices.append((x_value, 1, z_value))
 
-  connect_vertices(_faces, initial_vertex_index, initial_vertex_index + resolution, resolution, flip_winding)
+  connect_vertices(_faces, _uv_coords, initial_vertex_index, initial_vertex_index + resolution, resolution, flip_winding)
 
 
 def create_ring(width, height, depth, hole_radius):
@@ -164,22 +177,38 @@ def create_ring(width, height, depth, hole_radius):
   faces = [ 
     #(0, 1, 2), (2, 1, 3),           # front face   good 
   ]
-  create_plane_circle(vertices, faces, 10, 1, True)
-  create_plane_circle(vertices, faces, 10, 2, False)
-
-  connect_vertices(faces, 0, 20, 10, False)
-  connect_vertices(faces, 10, 30, 10, True)
-
-  print ("vertices: ")
-  print (vertices)
-  print ("size = " + str(len(vertices)))
-  print("faces: ")
-  print(faces)
-
   uv_coords = [
+    # for every vertice on the outer rings, get spatial coords and map it to the image
+    
     #(0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # front face
   ]  
+
+  create_plane_circle(vertices, faces, uv_coords, 10, 1, True)
+  create_plane_circle(vertices, faces, uv_coords, 10, 2, False)
+##
+#
+#  #bottom_face_start = len(faces) 
+  connect_vertices(faces, uv_coords, 0, 20, 10, False)  # 10 faces, so adds 20 faces
+#
+#  #top_face_start = len(faces)
+  connect_vertices(faces, uv_coords, 10, 30, 10, True)  # 10 faces, so adds 20 faces
+#
+#  #print ("vertices: ")
+#  #print (vertices)
+#  #print ("size = " + str(len(vertices)))
+#
+#  #print(f"top face start: {top_face_start}, bottom face start: {bottom_face_start}")
+  #print(f"face vertices: {vertices[faces[0][0]]} {vertices[faces[0][1]]} {vertices[faces[0][2]]}")
+
+
   create_object(vertices, faces, uv_coords)
+
+#for model in models:
+#  filepath = filepath_for_model(model)
+#  print ("filepath is: " + filepath)
+#  if Path(filepath).is_file():
+#    print("Warning file: " + filepath + " already exists, exiting without writing any files")
+#    exit(1)
 
 for model in models:
   delete_unwanted_objects(['CAMERA', 'LIGHT', 'MESH'])
