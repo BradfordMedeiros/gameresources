@@ -8,8 +8,7 @@ models = [
   { 'shape' : 'block', 'width' : 2, 'height' : 10,  'depth' : 0.5 },
   { 'shape' : 'plane', 'width' : 2, 'height' : 2 },
   { 'shape' : 'ramp', 'width' : 2, 'height' : 2, 'depth' : 1 },
-  #{ 'shape' : 'curve-ramp', 'width' : 2, 'height' : 2, 'depth' : 1 },
-  { 'shape' : 'ring', 'width' : 1, 'height' : 1, 'depth' : 1, 'hole-radius' : 0.5 },
+  { 'shape' : 'ring', 'depth' : 1, 'resolution': 10, 'radius' : 1, 'hole-radius' : 0.5},
 
 ]
 
@@ -20,9 +19,21 @@ def delete_unwanted_objects(objtypes):
 
 
 def filepath_for_model(model):
-  modelname = model['shape'] + '_' + str(model['width']) + 'x' + str(model['height'])
+  modelname = model['shape'] + '_' 
+
+  if 'width' in model:
+    modelname = modelname + 'x' + str(model['width']) 
+  if 'height' in model:
+    modelname = modelname + 'x' + str(model['height'])
   if 'depth' in model:
     modelname = modelname + 'x' + str(model['depth'])
+  if 'radius' in model:
+    modelname = modelname + 'r' + str(model['radius'])
+  if 'hole-radius' in model:
+    modelname = modelname + 'hr' + str(model['hole-radius'])
+  if 'resolution' in model:
+    modelname = modelname + 'res' + str(model['resolution'])
+    
   filepath = './generated/' + modelname + '.blend'
   return filepath
 
@@ -131,6 +142,10 @@ def connect_vertices(_faces, _uv_coords, vertex_index_from, vertex_index_to, siz
     _faces.append(face1)  # bottom right
     _faces.append(face2)  # top left
 
+    # this just assumed the coords are square, which isn't actually right. 
+    # Eg the main faces on the ring end up warped.  
+    # Could look at each two triangle pair, calculate min and max, and then calculate uvs from that.  
+    # also looks like some end up rotated 90 based on winding? maybe?
     if not flip_winding:
       _uv_coords.append((0, 1))
       _uv_coords.append((1, 1))
@@ -151,56 +166,34 @@ def connect_vertices(_faces, _uv_coords, vertex_index_from, vertex_index_to, siz
 
 
 
-def create_plane_circle(_vertices, _faces, _uv_coords, resolution, radius, flip_winding):
+def create_plane_circle(_vertices, _faces, _uv_coords, resolution, radius, depth, flip_winding):
   initial_vertex_index = len(_vertices)
+
+  halfDepth = 0.5 * depth
   for i in range(resolution):
     angle_radians = radians(i * (360 / resolution))
     x_value = radius * cos(angle_radians)
     z_value = radius * sin(angle_radians)
-    _vertices.append((x_value, 0, z_value))
+    _vertices.append((x_value, -halfDepth, z_value))
 
   for i in range(resolution):
     angle_radians = radians(i * (360 / resolution))
     x_value = radius * cos(angle_radians)
     z_value = radius * sin(angle_radians)
-    _vertices.append((x_value, 1, z_value))
+    _vertices.append((x_value, halfDepth, z_value))
 
   connect_vertices(_faces, _uv_coords, initial_vertex_index, initial_vertex_index + resolution, resolution, flip_winding)
 
 
-def create_ring(width, height, depth, hole_radius):
-  scale_width= 0.5 * width
-  scale_height = 0.5 * height
-  scale_depth = 0.5 * depth
+def create_ring(depth, radius, hole_radius, resolution):
   vertices = []
+  faces = []
+  uv_coords = []  
+  create_plane_circle(vertices, faces, uv_coords, resolution, hole_radius, depth, True)
+  create_plane_circle(vertices, faces, uv_coords, resolution, radius, depth, False)
 
-  faces = [ 
-    #(0, 1, 2), (2, 1, 3),           # front face   good 
-  ]
-  uv_coords = [
-    # for every vertice on the outer rings, get spatial coords and map it to the image
-    
-    #(0, 0), (0, 1), (-1, 0), (-1, 0), (0, 1), (-1, 1),    # front face
-  ]  
-
-  create_plane_circle(vertices, faces, uv_coords, 10, 1, True)
-  create_plane_circle(vertices, faces, uv_coords, 10, 2, False)
-##
-#
-#  #bottom_face_start = len(faces) 
-  connect_vertices(faces, uv_coords, 0, 20, 10, False)  # 10 faces, so adds 20 faces
-#
-#  #top_face_start = len(faces)
-  connect_vertices(faces, uv_coords, 10, 30, 10, True)  # 10 faces, so adds 20 faces
-#
-#  #print ("vertices: ")
-#  #print (vertices)
-#  #print ("size = " + str(len(vertices)))
-#
-#  #print(f"top face start: {top_face_start}, bottom face start: {bottom_face_start}")
-  #print(f"face vertices: {vertices[faces[0][0]]} {vertices[faces[0][1]]} {vertices[faces[0][2]]}")
-
-
+  connect_vertices(faces, uv_coords, 0, resolution * 2, resolution, False)  # 10 faces, so adds 20 faces
+  connect_vertices(faces, uv_coords, resolution, resolution * 2 + resolution, resolution, True)  # 10 faces, so adds 20 faces  
   create_object(vertices, faces, uv_coords)
 
 #for model in models:
@@ -230,11 +223,11 @@ for model in models:
     depth = model['depth']
     create_ramp(width, height, depth)
   elif shape == 'ring':
-    width = model['width']
-    height = model['height']
     depth = model['depth']
+    radius = model['radius']
     hole_radius = model['hole-radius'];
-    create_ring(width, height, depth, hole_radius) 
+    resolution = model['resolution'];
+    create_ring(depth, radius, hole_radius, resolution) 
   else:
     print('invalid shape type: ' + shape)
     exit(1)
