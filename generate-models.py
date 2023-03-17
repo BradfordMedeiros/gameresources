@@ -235,11 +235,3 @@ for model in models:
   bpy.ops.wm.save_mainfile(filepath = filepath)
 
 
-
-  
-
-
-
-
-
-print("hello world")
