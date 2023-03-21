@@ -7,9 +7,13 @@ fbx: $(patsubst ./%.blend, ./build/%.fbx, ${SOURCES})
 gltf: $(patsubst ./%.blend, ./build/%.gltf, ${SOURCES})
 
 
-tex := $(shell find . -wholename './*.png')  # neess to filter out textures in build 
-copiedtex: $(patsubst ./%.png, ./build/%.png, ${tex})
-normaltex: $(patsubst ./%.png, ./build/%.normal.png, ${tex})
+tex_png := $(shell find . -wholename './*.png' | grep -v build) 
+copiedtex_png: $(patsubst ./%.png, ./build/%.png, ${tex_png})
+normaltex_png: $(patsubst ./%.png, ./build/%.normal.png, ${tex_png})
+
+tex_jpg := $(shell find . -wholename './*.jpg' | grep -v build)  
+copiedtex_jpg: $(patsubst ./%.jpg, ./build/%.jpg, ${tex_jpg})
+normaltex_jpg: $(patsubst ./%.jpg, ./build/%.normal.jpg, ${tex_jpg})
 
 fixmodels: $(patsubst ./%.blend, %.blend.update, ${SOURCES})
 validate:
@@ -36,7 +40,7 @@ generate-models:
 	#blender $< --background --python ./generate-models.py -- $@ #> /dev/null
 	@blender $< --python ./generate-models.py -- $@
 
-generate-normal-textures: copiedtex normaltex
+generate-normal-textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
 	@echo "Generating normal textures: $<"
 	#@echo "generating for $<"
 
@@ -45,6 +49,15 @@ generate-normal-textures: copiedtex normaltex
 	@gegl -i $< -o $@ -- normal-map
 
 ./build/%.png : %.png
+	@echo "copy $< to $$(dirname $@) \n"
+	@mkdir -p $$(dirname $@)
+	@cp $< $$(dirname $@);
+
+./build/%.normal.jpg : ./build/%.jpg
+	@echo "making for $@ depends on $<\n"
+	@gegl -i $< -o $@ -- normal-map
+
+./build/%.jpg : %.jpg
 	@echo "copy $< to $$(dirname $@) \n"
 	@mkdir -p $$(dirname $@)
 	@cp $< $$(dirname $@);
