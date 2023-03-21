@@ -6,6 +6,11 @@ dae: $(patsubst ./%.blend, ./build/%.dae, ${SOURCES})
 fbx: $(patsubst ./%.blend, ./build/%.fbx, ${SOURCES})
 gltf: $(patsubst ./%.blend, ./build/%.gltf, ${SOURCES})
 
+
+tex := $(shell find . -wholename './*.png')  # neess to filter out textures in build 
+copiedtex: $(patsubst ./%.png, ./build/%.png, ${tex})
+normaltex: $(patsubst ./%.png, ./build/%.normal.png, ${tex})
+
 fixmodels: $(patsubst ./%.blend, %.blend.update, ${SOURCES})
 validate:
 	@./check-models.sh || true
@@ -30,6 +35,21 @@ generate-models:
 	@echo "Generating models"
 	#blender $< --background --python ./generate-models.py -- $@ #> /dev/null
 	@blender $< --python ./generate-models.py -- $@
+
+generate-normal-textures: copiedtex normaltex
+	@echo "Generating normal textures: $<"
+	#@echo "generating for $<"
+
+./build/%.normal.png : ./build/%.png
+	@echo "making for $@ depends on $<\n"
+	@gegl -i $< -o $@ -- normal-map
+
+./build/%.png : %.png
+	@echo "copy $< to $$(dirname $@) \n"
+	@mkdir -p $$(dirname $@)
+	@cp $< $$(dirname $@);
+
+
 
 clean-generate:
 	@rm ./generated/*
