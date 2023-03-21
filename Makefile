@@ -1,6 +1,6 @@
 SOURCES := $(shell find . -type f -name '*.blend')
 
-all: gltf
+all: gltf textures
 	
 dae: $(patsubst ./%.blend, ./build/%.dae, ${SOURCES})
 fbx: $(patsubst ./%.blend, ./build/%.fbx, ${SOURCES})
@@ -40,9 +40,8 @@ generate-models:
 	#blender $< --background --python ./generate-models.py -- $@ #> /dev/null
 	@blender $< --python ./generate-models.py -- $@
 
-generate-normal-textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
-	@echo "Generating normal textures: $<"
-	#@echo "generating for $<"
+textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
+
 
 ./build/%.normal.png : ./build/%.png
 	@echo "making for $@ depends on $<\n"
@@ -66,5 +65,6 @@ generate-normal-textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jp
 
 clean-generate:
 	@rm ./generated/*
+
 clean:
 	@rm -rf ./build
