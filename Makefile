@@ -1,3 +1,6 @@
+blender :=/snap/bin/blender  # distro specific, probably should just assume blender is on path for this script
+############################3
+
 SOURCES := $(shell find . -type f -name '*.blend')
 
 all: gltf textures
