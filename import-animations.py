@@ -1,3 +1,14 @@
+"""
+Process:
+    root source armature should be a fbx file matching the other animation skeletons but w/o any animations
+    add animations to the source files array as desired
+
+    running this script will generate a new .blend file.  
+    This .blend file will then contain a skeleton that you can copy/paste into a new blend file with the model
+    that model can be scaled and whatnot just fine in edit mode -> add with automatic weights
+
+"""
+
 import bpy
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
