@@ -65,6 +65,9 @@ textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
 	@cp $< $$(dirname $@);
 
 
+combine-animations: 
+	echo "build animations"
+	@blender $< --python ./import-animations.py
 
 clean-generate:
 	@rm ./generated/*
