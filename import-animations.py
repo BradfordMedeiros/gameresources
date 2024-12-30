@@ -18,6 +18,7 @@ Process:
 
 import bpy
 import os
+from pathlib import Path
 
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
@@ -25,16 +26,20 @@ bpy.ops.outliner.orphans_purge()
 
 root_source_armature = "/home/brad/gamedev/mosttrusted/gameresources/animations/armature.fbx"
 
+def all_files(directory):
+    for dirpath,_,filenames in os.walk(directory):
+        for f in filenames:
+            yield os.path.abspath(os.path.join(dirpath, f))
+
 def get_animation_files():
-	animation_source_files = [
-		{ 'name' : 'jump', 'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/actions/Jumping.fbx" },
-		{ 'name' : 'run',  'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/actions/Running.fbx" },
-		{ 'name' : 'dance',  'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/actions/hiphop_dance.fbx" },
-		{ 'name' : 'walk',  'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/actions/walking.fbx" },
-	]
+	animation_source_files = []
+	for fullpath in all_files('./animations/actions'):
+		action_name = Path(fullpath).stem
+		animation_source_files.append({
+			'name' : action_name,
+			'file' : fullpath,
+		})
 	return animation_source_files
-
-
 
 
 def load_scene(filepath):
