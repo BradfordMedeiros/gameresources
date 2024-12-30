@@ -5,22 +5,36 @@ Process:
 
     running this script will generate a new .blend file.  
     This .blend file will then contain a skeleton that you can copy/paste into a new blend file with the model
+    
+    make sure all transformations not applied to deltas.
+    so transform expand panel, make sure all 1 scale, no rotation, no location.  check animations to make sure looks good
+	
     that model can be scaled and whatnot just fine in edit mode -> add with automatic weights
+
+
+
 
 """
 
 import bpy
+import os
+
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 bpy.ops.outliner.orphans_purge()
 
 root_source_armature = "/home/brad/gamedev/mosttrusted/gameresources/animations/armature.fbx"
 
-animation_source_files = [
-	{ 'name' : 'jump', 'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/Jumping.fbx" },
-	{ 'name' : 'run',  'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/Running.fbx" },
-	{ 'name' : 'dance',  'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/hiphop_dance.fbx" },
-]
+def get_animation_files():
+	animation_source_files = [
+		{ 'name' : 'jump', 'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/actions/Jumping.fbx" },
+		{ 'name' : 'run',  'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/actions/Running.fbx" },
+		{ 'name' : 'dance',  'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/actions/hiphop_dance.fbx" },
+		{ 'name' : 'walk',  'file' : "/home/brad/gamedev/mosttrusted/gameresources/animations/actions/walking.fbx" },
+	]
+	return animation_source_files
+
+
 
 
 def load_scene(filepath):
@@ -29,9 +43,17 @@ def load_scene(filepath):
 	imported_objs = set(bpy.context.scene.objects) - old_objs
 	return imported_objs
 
+animation_source_files = get_animation_files()
+
+for animation in animation_source_files:
+	if not os.path.exists(animation['file']):
+		print('file does not exist: ' + animation['file'])
+		exit(1)
+
 for animation in animation_source_files: 
 	# this has the side effect of keeping the actions
-	imported_objs = load_scene(animation['file'])
+	file_path = animation['file']
+	imported_objs = load_scene(file_path)
 	for obj in imported_objs:
 		if obj != None and obj.animation_data != None:
 			action = obj.animation_data.action
