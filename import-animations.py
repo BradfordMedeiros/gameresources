@@ -62,8 +62,9 @@ def disable_root_motion():
 				if should_disable:
 					channel.mute = True
 
+combined_filepath = '/home/brad/gamedev/mosttrusted/gameresources/animations/combined.blend'
 
-root_source_armature = "/home/brad/gamedev/mosttrusted/gameresources/animations/armature.fbx"
+root_source_armature = '/home/brad/gamedev/mosttrusted/gameresources/animations/armature.fbx'
 animation_source_files = get_animation_files()
 animation_params = {
 	'sitting' : {
@@ -93,6 +94,7 @@ bpy.ops.object.delete(use_global=False)
 bpy.ops.outliner.orphans_purge()
 bpy.ops.import_scene.fbx(filepath=root_source_armature)
 
-bpy.ops.wm.save_as_mainfile(filepath='/home/brad/gamedev/mosttrusted/gameresources/animations/combined.blend')
+bpy.ops.wm.save_as_mainfile(filepath=combined_filepath)
+
 exit(0)
 
