@@ -38,11 +38,6 @@ validate:
 	@echo "Updating model $<"
 	@blender $< --background --python ./try-fixmodel.py -- $@ > /dev/null
 
-generate-models:
-	@echo "Generating models"
-	#blender $< --background --python ./generate-models.py -- $@ #> /dev/null
-	@blender $< --python ./generate-models.py -- $@
-
 textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
 
 
