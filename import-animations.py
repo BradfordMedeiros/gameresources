@@ -24,8 +24,6 @@ bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 bpy.ops.outliner.orphans_purge()
 
-root_source_armature = "/home/brad/gamedev/mosttrusted/gameresources/animations/armature.fbx"
-
 def all_files(directory):
     for dirpath,_,filenames in os.walk(directory):
         for f in filenames:
@@ -48,7 +46,37 @@ def load_scene(filepath):
 	imported_objs = set(bpy.context.scene.objects) - old_objs
 	return imported_objs
 
+def rename_obj_action(obj):
+	if obj != None and obj.animation_data != None:
+		action = obj.animation_data.action
+		action.name = animation['name']
+
+def disable_root_motion():
+	for action in bpy.data.actions:
+		fcurves = action.fcurves
+		for channel in fcurves:
+			channel_name = channel.data_path
+			if ('mixamorig:Hips' in channel_name) and ('location' in channel_name):
+				should_disable = True
+				if action.name in animation_params:
+					params = animation_params[action.name]
+					if 'disable_root_motion' in params:
+						should_disable = params['disable_root_motion'] != False
+				
+				if should_disable:
+					channel.mute = True
+					
+
+root_source_armature = "/home/brad/gamedev/mosttrusted/gameresources/animations/armature.fbx"
 animation_source_files = get_animation_files()
+animation_params = {
+	'sitting' : {
+		'disable_root_motion' : False,
+	},
+	'walking' : {
+		'disable_root_motion' : False,
+	},
+}
 
 for animation in animation_source_files:
 	if not os.path.exists(animation['file']):
@@ -60,16 +88,12 @@ for animation in animation_source_files:
 	file_path = animation['file']
 	imported_objs = load_scene(file_path)
 	for obj in imported_objs:
-		if obj != None and obj.animation_data != None:
-			action = obj.animation_data.action
-			action.name = animation['name']
-			print (action.name)
-	
-		
+		rename_obj_action(obj)
+
+disable_root_motion()
 
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 bpy.ops.outliner.orphans_purge()
 bpy.ops.import_scene.fbx(filepath=root_source_armature)
 
-#exit(0)
