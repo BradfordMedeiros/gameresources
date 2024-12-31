@@ -10,10 +10,6 @@ Process:
     so transform expand panel, make sure all 1 scale, no rotation, no location.  check animations to make sure looks good
 	
     that model can be scaled and whatnot just fine in edit mode -> add with automatic weights
-
-
-
-
 """
 
 import bpy
