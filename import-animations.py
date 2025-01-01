@@ -70,9 +70,6 @@ animation_params = {
 	'sitting' : {
 		'disable_root_motion' : False,
 	},
-	'walking' : {
-		'disable_root_motion' : False,
-	},
 }
 
 for animation in animation_source_files:
