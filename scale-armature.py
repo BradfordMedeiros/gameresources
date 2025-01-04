@@ -1,9 +1,7 @@
 
-# exec(open('/home/brad/gamedev/mosttrusted/gameresources/scale-armature.py').read())
-
-
 # This script scales a model while preserving the keyframe animations
 # This -- ought -- to be built into blender, but it doesn't seem to be (bug?)
+# exec(open('/home/brad/gamedev/mosttrusted/gameresources/scale-armature.py').read())
 
 def scale_model(scale):
 	bpy.data.objects['Armature'].scale.x = scale
