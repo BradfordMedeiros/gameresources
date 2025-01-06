@@ -24,19 +24,18 @@ validate:
 
 ./build/%.fbx: %.blend
 	@echo "Build $@ from $<"
-	@blender $< --background --python ./export-model.py -- $@ fbx > /dev/null
+	@blender $< --background --python ./export-model.py -- $@ fbx
 
 ./build/%.dae: %.blend
 	@echo "Build $@ from $<"
-	@blender $< --background --python ./export-model.py -- $@ dae > /dev/null
+	@blender $< --background --python ./export-model.py -- $@ dae
 
 ./build/%.gltf: %.blend
 	@echo "Build $@ from $<"
-	@blender $< --background --python ./export-model.py -- $@ gltf > /dev/null
-
+	@blender $< --background --python ./export-model.py -- $@ gltf
 %.blend.update : %.blend
 	@echo "Updating model $<"
-	@blender $< --background --python ./try-fixmodel.py -- $@ > /dev/null
+	@blender $< --background --python ./try-fixmodel.py -- $@
 
 textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
 
