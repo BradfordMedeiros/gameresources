@@ -63,8 +63,6 @@ animation:
 	echo "build animations"
 	@blender $< --python ./scripts/import-animations.py
 
-clean-generate:
-	@rm ./generated/*
 
 clean:
 	@rm -rf ./build
