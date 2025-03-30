@@ -39,6 +39,7 @@ checkmodels: $(patsubst ./%.blend, %.blend.validate, ${SOURCES})
 %.blend.validate : %.blend
 	@echo "Validating model $<"
 	@blender $< --background --python ./scripts/check-paths.py -- $@
+	@touch $@
 
 textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
 
