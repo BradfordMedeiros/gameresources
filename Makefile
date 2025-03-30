@@ -19,11 +19,7 @@ copiedtex_jpg: $(patsubst ./%.jpg, ./build/%.jpg, ${tex_jpg})
 normaltex_jpg: $(patsubst ./%.jpg, ./build/%.normal.jpg, ${tex_jpg})
 
 fixmodels: $(patsubst ./%.blend, %.blend.update, ${SOURCES})
-
 checkmodels: $(patsubst ./%.blend, %.blend.validate, ${SOURCES})
-validate:
-	@./scripts/check-models.sh || true
-
 
 ./build/%.fbx: %.blend
 	@echo "Build $@ from $<"
