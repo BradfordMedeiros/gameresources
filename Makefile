@@ -19,8 +19,11 @@ copiedtex_jpg: $(patsubst ./%.jpg, ./build/%.jpg, ${tex_jpg})
 normaltex_jpg: $(patsubst ./%.jpg, ./build/%.normal.jpg, ${tex_jpg})
 
 fixmodels: $(patsubst ./%.blend, %.blend.update, ${SOURCES})
+
+checkmodels: $(patsubst ./%.blend, %.blend.validate, ${SOURCES})
 validate:
 	@./scripts/check-models.sh || true
+
 
 ./build/%.fbx: %.blend
 	@echo "Build $@ from $<"
@@ -36,6 +39,10 @@ validate:
 %.blend.update : %.blend
 	@echo "Updating model $<"
 	@blender $< --background --python ./scripts/try-fixmodel.py -- $@
+
+%.blend.validate : %.blend
+	@echo "Validating model $<"
+	@blender $< --background --python ./scripts/check-paths.py -- $@
 
 textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
 
