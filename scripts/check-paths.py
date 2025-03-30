@@ -21,6 +21,7 @@ for img in bpy.data.images:
     is_correct_path = is_subdirectory(base_dir, abs_path)
     if not is_correct_path :
         print_red("Incorrect path reference: [" + img.filepath + "], length =" + str(len(img.filepath)))
+        has_errors = True
     else:
         print("checked: " + abs_path)
 
