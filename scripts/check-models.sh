@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
- 
+
 MODELS=$(find -name "*.blend")
 NUM_MODELS=$(echo -e "$MODELS" | wc -l)
 NUM_VALID=0
@@ -9,7 +9,7 @@ NUM_VALID=0
 for model in $MODELS
 do
   VALID="false"
-  MESSAGE=$(./assertlocal $model) && VALID="true"
+  MESSAGE=$(./scripts/assertlocal $model) && VALID="true"
   if [[ $VALID == "true" ]];
   then
      NUM_VALID=$(($NUM_VALID + 1))

@@ -20,22 +20,22 @@ normaltex_jpg: $(patsubst ./%.jpg, ./build/%.normal.jpg, ${tex_jpg})
 
 fixmodels: $(patsubst ./%.blend, %.blend.update, ${SOURCES})
 validate:
-	@./check-models.sh || true
+	@./scripts/check-models.sh || true
 
 ./build/%.fbx: %.blend
 	@echo "Build $@ from $<"
-	@blender $< --background --python ./export-model.py -- $@ fbx
+	@blender $< --background --python ./scripts/export-model.py -- $@ fbx
 
 ./build/%.dae: %.blend
 	@echo "Build $@ from $<"
-	@blender $< --background --python ./export-model.py -- $@ dae
+	@blender $< --background --python ./scripts/export-model.py -- $@ dae
 
 ./build/%.gltf: %.blend
 	@echo "Build $@ from $<"
-	@blender $< --background --python ./export-model.py -- $@ gltf
+	@blender $< --background --python ./scripts/export-model.py -- $@ gltf
 %.blend.update : %.blend
 	@echo "Updating model $<"
-	@blender $< --background --python ./try-fixmodel.py -- $@
+	@blender $< --background --python ./scripts/try-fixmodel.py -- $@
 
 textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
 
@@ -61,7 +61,7 @@ textures: copiedtex_png normaltex_png copiedtex_jpg normaltex_jpg
 
 animation: 
 	echo "build animations"
-	@blender $< --python ./import-animations.py
+	@blender $< --python ./scripts/import-animations.py
 
 clean-generate:
 	@rm ./generated/*
