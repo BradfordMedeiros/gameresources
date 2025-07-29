@@ -311,6 +311,12 @@ animation_params = {
     'grind' : {
         'disable_root_motion' : False,
     },
+    'walking-to-dying' : {
+        'disable_root_motion' : False,
+    },
+    'dying' : {
+        'disable_root_motion' : False,
+    },
 }
 
 for animation in animation_source_files:
