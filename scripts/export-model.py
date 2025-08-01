@@ -52,7 +52,7 @@ assert(build != None)
 
 def validate_uniform_transform(mesh_obj, error_text):
   if mesh_obj.location.x != 0 or mesh_obj.location.y != 0 or mesh_obj.location.z != 0:
-    print(error_text + ": location must be (1,1,1) for model got: " + str(mesh_obj.location))
+    print(error_text + ": location must be (0,0,0) for model got: " + str(mesh_obj.location))
     exit(1)
 
   if mesh_obj.scale.x != 1 or mesh_obj.scale.y != 1 or mesh_obj.scale.z != 1:
