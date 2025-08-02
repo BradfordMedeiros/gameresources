@@ -15,3 +15,9 @@ to make animations
 make animation
 exec(open('/home/brad/gamedev/mosttrusted/gameresources/scripts/scale-armature.py').read())
 fix_armature_scale()
+
+
+git lfs pull
+sudo apt install git-lfs
+git lfs install
+
