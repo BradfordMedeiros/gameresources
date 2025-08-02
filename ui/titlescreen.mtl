@@ -1,13 +1,3 @@
-# Blender MTL File: 'titlescreen.blend'
-# Material Count: 1
-
-newmtl Material.001
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd /home/brad/Desktop/titlescreen.png
+version https://git-lfs.github.com/spec/v1
+oid sha256:01f38b3616f61c0b009564d85f3168f0cd33c87cf33dfbdfc0ad624d417e3e65
+size 288
