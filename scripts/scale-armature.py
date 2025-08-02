@@ -45,3 +45,5 @@ def scale_to_dim(height):
 	relative_scale = height / old_height
 	scale_all(relative_scale)
 
+def fix_armature_scale():
+	scale_to_dim(1.85)
