@@ -1,0 +1,71 @@
+
+
+@SolidClass base() color(0 0 200)
+= teleport_zone : "teleport"
+[
+]
+
+@SolidClass base() color(0 0 200)
+= vertical_bound_plane : "Vertical Bounds Plane"
+[
+]
+
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= player_start : "player start"
+[
+]
+
+
+@SolidClass base() color(0 0 200)
+= player_end : "player end"
+[
+]
+
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/camera.gltf")
+= camera : "Camera"
+[
+    angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
+]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= spawnpoint : "Spawnpoint"
+[
+]
+
+
+
+// Ball game stuff
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= powerup_jump : "Jump Powerup"
+[
+]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= powerup_teleport : "Teleport Powerup"
+[
+]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= powerup_jump : "Jump Powerup"
+[
+]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= powerup_lowgravity : "Low Gravity Powerup"
+[
+]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= powerup_dash : "Dash Powerup"
+[
+]
