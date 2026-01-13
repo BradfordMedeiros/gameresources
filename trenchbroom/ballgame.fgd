@@ -6,6 +6,18 @@
 ]
 
 @SolidClass base() color(0 0 200)
+= trigger_zone : "trigger"
+[
+]
+
+
+@SolidClass base() color(0 0 200)
+= dynamic : "dynamic"
+[
+    angles(string) : "Angles (pitch yaw roll)" : "0 0 0"
+]
+
+@SolidClass base() color(0 0 200)
 = vertical_bound_plane : "Vertical Bounds Plane"
 [
 ]
@@ -16,6 +28,13 @@ model("build/objtypes/spawnpoint.gltf")
 = player_start : "player start"
 [
 ]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= teleport_exit : "teleport exit"
+[
+]
+
 
 
 @SolidClass base() color(0 0 200)
@@ -33,8 +52,9 @@ model("build/objtypes/camera.gltf")
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/spawnpoint.gltf")
-= spawnpoint : "Spawnpoint"
+= rail : "Rail"
 [
+    angles(string) : "Angles (pitch yaw roll)" : "0 0 0"
 ]
 
 
