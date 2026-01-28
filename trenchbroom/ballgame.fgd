@@ -57,6 +57,13 @@ model("build/objtypes/spawnpoint.gltf")
     angles(string) : "Angles (pitch yaw roll)" : "0 0 0"
 ]
 
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= orb : "Orb"
+[
+    angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
+]
+
 
 
 // Ball game stuff
