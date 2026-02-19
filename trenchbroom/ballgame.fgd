@@ -96,3 +96,9 @@ model("build/objtypes/spawnpoint.gltf")
 = powerup_dash : "Dash Powerup"
 [
 ]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint.gltf")
+= gem : "Gem"
+[
+]
