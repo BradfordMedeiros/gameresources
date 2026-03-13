@@ -6,7 +6,27 @@
 ]
 
 @SolidClass base() color(0 0 200)
+= water : "water"
+[
+]
+
+@SolidClass base() color(0 0 200)
 = trigger_zone : "trigger"
+[
+]
+
+@SolidClass base() color(0 0 200)
+= bouncepad : "bouncepad"
+[
+]
+
+@SolidClass base() color(0 0 200)
+= killplane : "killplane"
+[
+]
+
+@SolidClass base() color(0 0 200)
+= conveyer : "conveyer"
 [
 ]
 
@@ -24,13 +44,13 @@
 
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = player_start : "player start"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = teleport_exit : "teleport exit"
 [
 ]
@@ -51,15 +71,22 @@ model("build/objtypes/camera.gltf")
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = rail : "Rail"
 [
     angles(string) : "Angles (pitch yaw roll)" : "0 0 0"
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = orb : "Orb"
+[
+    angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
+]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint-big.gltf")
+= laser : "laser"
 [
     angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
 ]
@@ -68,37 +95,37 @@ model("build/objtypes/spawnpoint.gltf")
 
 // Ball game stuff
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = powerup_jump : "Jump Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = powerup_teleport : "Teleport Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = powerup_jump : "Jump Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = powerup_lowgravity : "Low Gravity Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = powerup_dash : "Dash Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint.gltf")
+model("build/objtypes/spawnpoint-big.gltf")
 = gem : "Gem"
 [
 ]
