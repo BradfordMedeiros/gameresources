@@ -64,7 +64,7 @@ model("build/objtypes/spawnpoint-big.gltf")
 
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/camera.gltf")
+model("build/objtypes/camera-big.gltf")
 = camera : "Camera"
 [
     angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation

@@ -6,12 +6,16 @@ import os
 
 output_file = sys.argv[6]
 output_format = sys.argv[7]
+is_big = False
+if len(sys.argv) >= 9:
+  is_big = sys.argv[8] == "big"
 
 output_folder = os.path.dirname(output_file)
 
 os.makedirs(output_folder, exist_ok=True)
 
 print("output format is: " + output_format)
+print("is big: " + str(is_big))
 
 export_fbx = True
 
@@ -63,12 +67,16 @@ def validate_uniform_transform(mesh_obj, error_text):
     print(error_text + ": rotation must be (0, 0, 0) got: " + str(mesh_obj.rotation_euler))
     exit(1)
 
-def validate_model():
+
+def get_model():
   mesh_obj = None
   for obj in bpy.data.objects:
     if obj.name == 'model':
       mesh_obj = obj
+  return mesh_obj 
 
+def validate_model():
+  mesh_obj = get_model()
   if mesh_obj == None:
     print('did not find root model should be named "model"')
     exit(1)
@@ -89,6 +97,24 @@ def validate_armatures():
 
 validate_model()
 validate_armatures()
+
+if is_big:
+    model = get_model()
+    if model is None:
+        print("Cannot find model to scale")
+        exit(1)
+
+    scale_factor = 10
+
+    # Scale the root model directly (works in background mode)
+    model.scale = (scale_factor, scale_factor, scale_factor)
+
+    # Optional: scale children meshes to match (if needed)
+    for child in model.children_recursive:
+        if child.type == 'MESH':
+            child.scale = tuple(s*scale_factor for s in child.scale)
+
+    print(f"Applied big scale ({scale_factor}x) to {model.name} and its children")
 
 build()
 
