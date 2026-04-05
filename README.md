@@ -21,3 +21,17 @@ git lfs pull
 sudo apt install git-lfs
 git lfs install
 
+
+
+coord system:
+trenchbroom
+z up
+y forward (into screen)
+x right 
+
+
+blender
+i treat it like (though this is technically not what blender says. but pretend!)
+z up
+y forward
+x right
