@@ -1,6 +1,8 @@
 import bpy
 import sys
 import os 
+import math
+import mathutils
 
 # https://docs.blender.org/api/current/bpy.ops.export_scene.html
 
@@ -17,26 +19,6 @@ os.makedirs(output_folder, exist_ok=True)
 print("output format is: " + output_format)
 print("is big: " + str(is_big))
 
-export_fbx = True
-
-def build_fbx():
-  bpy.ops.export_scene.fbx(
-    filepath=output_file, 
-    axis_forward='-Z', 
-    axis_up='Y', 
-    apply_unit_scale=True,  
-    apply_scale_options='FBX_SCALE_NONE',
-    global_scale=0.01,   # see https://developer.blender.org/T70161
-    add_leaf_bones=False
-  )
-
-def build_dae():
-  bpy.ops.wm.collada_export(
-    filepath=output_file, 
-    export_global_forward_selection='-Z',
-    export_global_up_selection='Y',  
-  )  
-
 def build_gltf():
   bpy.ops.export_scene.gltf(
     filepath=output_file, 
@@ -45,8 +27,6 @@ def build_gltf():
   )
 
 format_to_build = {
-  'fbx': build_fbx,
-  'dae': build_dae,
   'gltf': build_gltf,
 }
 
@@ -98,6 +78,7 @@ def validate_armatures():
 validate_model()
 validate_armatures()
 
+# This is specifically for trenchbroom.  Scale it up and rotate 180 along z (up), this orients it correctly
 if is_big:
     model = get_model()
     if model is None:
@@ -108,6 +89,9 @@ if is_big:
 
     # Scale the root model directly (works in background mode)
     model.scale = (scale_factor, scale_factor, scale_factor)
+    model.rotation_euler[0] = math.radians(0)
+    model.rotation_euler[1] = math.radians(0)
+    model.rotation_euler[2] = math.radians(180)
 
     # Optional: scale children meshes to match (if needed)
     for child in model.children_recursive:
