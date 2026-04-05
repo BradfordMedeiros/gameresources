@@ -55,6 +55,12 @@ model("build/objtypes/spawnpoint-big.gltf")
 [
 ]
 
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/gravityhole-big.gltf")
+= gravityhole : "gravityhole"
+[
+    angles(string) : "Angles (pitch yaw roll)" : "0 0 0"
+]
 
 
 @SolidClass base() color(0 0 200)
@@ -123,6 +129,13 @@ model("build/objtypes/spawnpoint-big.gltf")
 = powerup_dash : "Dash Powerup"
 [
 ]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint-big.gltf")
+= powerup_invincibility : "Invincisbility"
+[
+]
+
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/spawnpoint-big.gltf")
