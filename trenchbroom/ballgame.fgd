@@ -91,7 +91,7 @@ model("build/objtypes/spawnpoint-big.gltf")
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint-big.gltf")
+model("build/objtypes/laser-big.gltf")
 = laser : "laser"
 [
     angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
@@ -101,37 +101,37 @@ model("build/objtypes/spawnpoint-big.gltf")
 
 // Ball game stuff
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint-big.gltf")
+model("build/objtypes/powerup-big.gltf")
 = powerup_jump : "Jump Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint-big.gltf")
+model("build/objtypes/powerup-big.gltf")
 = powerup_teleport : "Teleport Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint-big.gltf")
+model("build/objtypes/powerup-big.gltf")
 = powerup_jump : "Jump Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint-big.gltf")
+model("build/objtypes/powerup-big.gltf")
 = powerup_lowgravity : "Low Gravity Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint-big.gltf")
+model("build/objtypes/powerup-big.gltf")
 = powerup_dash : "Dash Powerup"
 [
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
-model("build/objtypes/spawnpoint-big.gltf")
+model("build/objtypes/powerup-big.gltf")
 = powerup_invincibility : "Invincisbility"
 [
 ]
