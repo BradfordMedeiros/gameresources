@@ -16,6 +16,12 @@
 ]
 
 @SolidClass base() color(0 0 200)
+= lightzone : "lightzone"
+[
+]
+
+
+@SolidClass base() color(0 0 200)
 = bouncepad : "bouncepad"
 [
 ]
@@ -77,6 +83,13 @@ model("build/objtypes/camera-big.gltf")
 ]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/light-big.gltf")
+= light : "light"
+[
+    angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
+]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/spawnpoint-big.gltf")
 = rail : "Rail"
 [
@@ -100,6 +113,15 @@ model("build/objtypes/laser-big.gltf")
 
 
 // Ball game stuff
+
+// Ball game stuff
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/powerup-big.gltf")
+= activateable : "Activeable"
+[
+]
+
+
 @PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/powerup-big.gltf")
 = powerup_jump : "Jump Powerup"
