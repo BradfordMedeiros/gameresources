@@ -114,7 +114,14 @@ model("build/objtypes/laser-big.gltf")
 
 // Ball game stuff
 
-// Ball game stuff
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/powerup-big.gltf")
+= soul : "soul"
+[
+]
+
+
 @PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/powerup-big.gltf")
 = activateable : "Activeable"
