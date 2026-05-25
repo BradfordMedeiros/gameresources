@@ -57,6 +57,13 @@ model("build/objtypes/spawnpoint-big.gltf")
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/spawnpoint-big.gltf")
+= tube_exit : "tube exit"
+[
+]
+
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint-big.gltf")
 = teleport_exit : "teleport exit"
 [
 ]
