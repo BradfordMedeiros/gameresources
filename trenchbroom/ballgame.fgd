@@ -163,7 +163,6 @@ model("build/objtypes/laser-big.gltf")
 ]
 
 
-
 // Ball game stuff
 
 
@@ -178,6 +177,8 @@ model("build/objtypes/powerup-big.gltf")
 model("build/objtypes/powerup-big.gltf")
 = activateable : "Activeable"
 [
+    angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
+
 ]
 
 
