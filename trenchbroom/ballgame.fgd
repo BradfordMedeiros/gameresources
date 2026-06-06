@@ -51,6 +51,14 @@
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/spawnpoint-big.gltf")
+= moon : "moon"
+[
+    angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
+]
+
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint-big.gltf")
 = player_start : "player start"
 [
     angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
