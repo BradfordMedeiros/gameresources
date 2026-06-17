@@ -49,9 +49,24 @@
 ]
 
 
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint-big.gltf")
+= vertical_bound_point : "vertical_bound_point"
+[
+]
+
+
 @PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/spawnpoint-big.gltf")
 = moon : "moon"
+[
+    angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
+]
+
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint-big.gltf")
+= moonend : "moonend"
 [
     angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
 ]
@@ -195,6 +210,13 @@ model("build/objtypes/powerup-big.gltf")
 
 ]
 
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/powerup-big.gltf")
+= simple_activate : "simple_activate"
+[
+    angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
+
+]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/powerup-big.gltf")
