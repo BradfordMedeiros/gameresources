@@ -71,6 +71,12 @@ model("build/objtypes/spawnpoint-big.gltf")
     angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
 ]
 
+@PointClass base() size(-8 -8 -8, 8 8 8)
+model("build/objtypes/spawnpoint-big.gltf")
+= warp : "warp"
+[
+    angles(string) : "Pitch Yaw Roll" : "0 0 0" // full 3D rotation
+]
 
 @PointClass base() size(-8 -8 -8, 8 8 8)
 model("build/objtypes/spawnpoint-big.gltf")
