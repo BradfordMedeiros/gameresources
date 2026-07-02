@@ -32,6 +32,12 @@
 ]
 
 @SolidClass base() color(0 0 200)
+= surface : "surface"
+[
+]
+
+
+@SolidClass base() color(0 0 200)
 = killplane : "killplane"
 [
 ]
